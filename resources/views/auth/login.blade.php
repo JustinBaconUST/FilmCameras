@@ -1,10 +1,27 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <title>Film Cameras</title>
+</head>
 
-        <x-validation-errors class="mb-4" />
+<style>
+  .txt_field label {
+    font-family: sans-serif;
+  }
+  .center {
+    font-family: sans-serif;
+    color: black;
+  }
+</style>
+
+</head>
+<body>
+@include('header')
+
+<section>
+    <div class="center">
+        <h1>LOGIN</h1>
 
         @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
@@ -14,35 +31,32 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
+            @error('username')
+            <span class="text-red-500">{{ $message }}</span>
+        @enderror
+            <div class="txt_field">
+                <input id="username" type="text" name="username" required autofocus autocomplete="username">
+                <span></span>
+                <label>Username</label>
+              </div>
+              <div class="txt_field">
+                <input id="password" type="password" name="password" required autocomplete="current-password">
+                <span></span>
+                <label>Password</label>
+                @error('password')
+                <span class="text-red-500">{{ $message }}</span>
+            @enderror
+              </div>
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <div class="pass">
+                <a href="{{ route('password.request') }}">Forgot Password?</a>
             </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+            <input type="submit" value="{{ __('Login') }}">
+            <div class="signup_link">
+              Not a member? <a href="{{ route('register') }}">Signup.</a>
             </div>
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
         </form>
-    </x-authentication-card>
-</x-guest-layout>
+    </div>
+</section>
